@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const Contact = () => {
+  // State to manage form inputs
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -9,18 +10,26 @@ const Contact = () => {
     message: "",
   });
 
+  // Handle input changes
   const handleChange = (e) => {
     setFormData((s) => ({ ...s, [e.target.name]: e.target.value }));
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Retrieve existing data from localStorage or initialize an empty array
     const existingData =
       JSON.parse(localStorage.getItem("contactFormData")) || [];
+
+    // Append new form data
     existingData.push(formData);
+
+    // Save updated data to localStorage
     localStorage.setItem("contactFormData", JSON.stringify(existingData));
 
+    // Reset form state
     setFormData({
       firstName: "",
       lastName: "",
@@ -29,12 +38,15 @@ const Contact = () => {
       message: "",
     });
 
+    // Show success notification
     showNotification("Contact request delivered", "success");
   };
 
+  // Function to show notification messages
   function showNotification(message, type) {
     let bgColor;
 
+    // Set background color based on notification type
     switch (type) {
       case "success":
         bgColor = "linear-gradient(to right, #1D976C, #93F9B9)";
@@ -46,6 +58,7 @@ const Contact = () => {
         bgColor = "#000";
     }
 
+    // Show the toast notification
     Toastify({
       text: message,
       duration: 3000,
@@ -76,6 +89,7 @@ const Contact = () => {
             >
               <form id="form" className="text-black" onSubmit={handleSubmit}>
                 <div className="row">
+                  {/* First Name Input */}
                   <div className="col-md-6 mb-4">
                     <label htmlFor="firstName" className="mb-1">
                       First Name <span style={{ color: "red" }}>*</span>
@@ -90,6 +104,7 @@ const Contact = () => {
                       required
                     />
                   </div>
+                  {/* Last Name Input */}
                   <div className="col-md-6 mb-4">
                     <label htmlFor="lastName" className="mb-1">
                       Last Name <span style={{ color: "red" }}>*</span>
@@ -104,6 +119,7 @@ const Contact = () => {
                       required
                     />
                   </div>
+                  {/* Email Input */}
                   <div className="col-12 mb-4">
                     <label htmlFor="email">
                       Email <span style={{ color: "red" }}>*</span>
@@ -118,6 +134,7 @@ const Contact = () => {
                       required
                     />
                   </div>
+                  {/* Query Type Radio Buttons */}
                   <div className="form-group mb-4">
                     <label htmlFor="queryType" className="d-block">
                       Query Type <span style={{ color: "red" }}>*</span>
@@ -153,6 +170,7 @@ const Contact = () => {
                       </label>
                     </div>
                   </div>
+                  {/* Message Textarea */}
                   <div className="col-12 mb-4">
                     <label htmlFor="message" className="mb-1">
                       Message <span style={{ color: "red" }}>*</span>
@@ -168,6 +186,7 @@ const Contact = () => {
                     />
                   </div>
                 </div>
+                {/* Consent Checkbox */}
                 <div className="form-group form-check mt-2 mb-2">
                   <input
                     type="checkbox"
@@ -180,6 +199,7 @@ const Contact = () => {
                     <span style={{ color: "red" }}>*</span>
                   </label>
                 </div>
+                {/* Submit Button */}
                 <div className="col-12">
                   <button className="btn btn-primary w-100 mt-2" type="submit">
                     Submit

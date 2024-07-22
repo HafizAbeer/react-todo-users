@@ -3,15 +3,21 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
+  // State to manage email, password, and password visibility
   const [state, setState] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+
+  // Function to handle input changes and update state
   const handleChange = (e) =>
     setState((s) => ({ ...s, [e.target.name]: e.target.value }));
 
   const navigate = useNavigate();
 
+  // Function to handle form submission for login
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission behavior
+
+    // Retrieve registered users from localStorage
     const existingUsers =
       JSON.parse(localStorage.getItem("registeredUsers")) || [];
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -19,6 +25,7 @@ const Login = () => {
     let { email, password } = state;
     email = email.trim();
 
+    // Input validation
     if (!email) {
       showNotification("Enter email", "error");
       return;
@@ -36,6 +43,7 @@ const Login = () => {
       return;
     }
 
+    // Find user by email and validate password
     const user = existingUsers.find((user) => user.email === email);
 
     if (!user) {
@@ -44,9 +52,10 @@ const Login = () => {
       showNotification("Invalid email or password", "error");
     } else {
       showNotification("Login successfully", "success");
-      navigate("/home");
+      navigate("/home"); // Navigate to the home page on successful login
     }
 
+    // Function to show notification messages
     function showNotification(message, type) {
       let bgColor;
 
@@ -80,10 +89,13 @@ const Login = () => {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6 col-lg-4">
+            {/* Card for login form */}
             <div className="card border-none p-3 p-md-4">
               <h2 className="text-center text-primary mb-4">Login</h2>
+              {/* Login form */}
               <form onSubmit={handleSubmit}>
                 <div className="row">
+                  {/* Email input field */}
                   <div className="col-12 mb-4">
                     <input
                       type="email"
@@ -93,6 +105,7 @@ const Login = () => {
                       onChange={handleChange}
                     />
                   </div>
+                  {/* Password input field with toggle visibility */}
                   <div className="col-12 mb-4" style={{ position: "relative" }}>
                     <input
                       type={showPassword ? "text" : "password"}
@@ -117,9 +130,11 @@ const Login = () => {
                       {showPassword ? <FaEyeSlash /> : <FaEye />}
                     </button>
                   </div>
+                  {/* Link to forgot password page */}
                   <div className="mb-3">
                     <Link to={"/forgotpassword"}>Forgot Password</Link>
                   </div>
+                  {/* Submit button and link to registration page */}
                   <div className="col-12">
                     <button className="btn btn-primary w-100">Login</button>
                     <p className="mb-0 mt-2 text-center">

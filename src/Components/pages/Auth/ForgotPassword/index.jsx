@@ -2,22 +2,27 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ForgotPassword = () => {
+  // State to manage input values for email, new password, and confirm password
   const [state, setState] = useState({
     email: "",
     newPassword: "",
     confirmPassword: "",
   });
 
+  // Function to handle input changes and update state
   const handleChange = (e) =>
     setState((s) => ({ ...s, [e.target.name]: e.target.value }));
 
+  // Regular expression for validating email format
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
+  // Function to handle form submission for resetting password
   const handleForgotPassword = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission behavior
 
     const { email, newPassword, confirmPassword } = state;
 
+    // Input validation
     if (!email) {
       showNotification("Please enter your email", "error");
       return;
@@ -43,8 +48,10 @@ const ForgotPassword = () => {
       return;
     }
 
-    const userData = JSON.parse(localStorage.getItem("registeredUsers")) || {};
+    // Retrieve user data from localStorage
+    const userData = JSON.parse(localStorage.getItem("registeredUsers")) || [];
 
+    // Check if the email exists in user data
     const findEmail = userData.find((user) => user.email === email);
 
     if (!findEmail) {
@@ -52,12 +59,14 @@ const ForgotPassword = () => {
       return;
     }
 
+    // Update the user's password
     findEmail.password = newPassword;
     localStorage.setItem("registeredUsers", JSON.stringify(userData));
 
     showNotification("Password has been reset successfully", "success");
   };
 
+  // Function to show notification messages
   function showNotification(message, type) {
     let bgColor;
 
@@ -88,10 +97,13 @@ const ForgotPassword = () => {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6 col-lg-4">
+            {/* Card for password reset form */}
             <div className="card border-none p-3 p-md-4">
               <h2 className="text-center text-primary mb-4">Reset Password</h2>
+              {/* Password reset form */}
               <form onSubmit={handleForgotPassword}>
                 <div className="row">
+                  {/* Email input field */}
                   <div className="col-12 mb-4">
                     <input
                       type="email"
@@ -102,6 +114,7 @@ const ForgotPassword = () => {
                       onChange={handleChange}
                     />
                   </div>
+                  {/* New password input field */}
                   <div className="col-12 mb-4">
                     <input
                       type="password"
@@ -112,6 +125,7 @@ const ForgotPassword = () => {
                       onChange={handleChange}
                     />
                   </div>
+                  {/* Confirm new password input field */}
                   <div className="col-12 mb-4">
                     <input
                       type="password"
@@ -122,6 +136,7 @@ const ForgotPassword = () => {
                       onChange={handleChange}
                     />
                   </div>
+                  {/* Submit button and link to login page */}
                   <div className="col-12">
                     <button type="submit" className="btn btn-primary w-100">
                       Reset Password
