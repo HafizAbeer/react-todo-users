@@ -1,8 +1,14 @@
 // Header.js
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Perform any logout logic here, like clearing user data or tokens
+    navigate("/login"); // Navigate to the login page
+  };
   return (
     <header>
       <nav
@@ -42,6 +48,14 @@ const Header = () => {
                 <Link to={"/contact"} className="nav-link text-white">
                   Contact
                 </Link>
+              </li>
+              <li className="nav-item">
+                <button
+                  className="btn btn-outline-light"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
               </li>
             </ul>
           </div>
