@@ -20,11 +20,14 @@ import Todos from "./Components/pages/Frontend/Todos";
 import AddTodo from "./Components/pages/Frontend/AddTodo";
 import Users from "./Components/pages/Frontend/Users";
 import NotFound from "./Components/pages/Frontend/NotFound";
+import AuthContextProvider from "./contexts/AuthContext";
 
 const App = () => {
   return (
     <Router>
-      <Main />
+      <AuthContextProvider>
+        <Main />
+      </AuthContextProvider>
     </Router>
   );
 };
@@ -51,7 +54,6 @@ const Main = () => {
         <Route path="/todos" element={<Todos />} />
         <Route path="/users" element={<Users />} />
         <Route path="*" element={<NotFound />} />{" "}
-        {/* Catch-all route for 404 */}
       </Routes>
       {!isAuthRoute && <Footer />}
     </>

@@ -1,18 +1,25 @@
-// Header.js
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Header = () => {
+  const { isAuthenticate, setIsAuthenticate } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // Perform any logout logic here, like clearing user data or tokens
-    navigate("/login"); // Navigate to the login page
+  const handleLogin = () => {
+    navigate("/login");
   };
+
+  const handleLogout = () => {
+    setIsAuthenticate(false);
+    localStorage.setItem("isAuthenticate", "false");
+    navigate("/login");
+  };
+
   return (
     <header>
       <nav
-        className="navbar navbar-expand-lg "
+        className="navbar navbar-expand-lg"
         style={{ backgroundColor: "#c21807" }}
       >
         <div className="container">
@@ -50,12 +57,21 @@ const Header = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <button
-                  className="btn btn-outline-light"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
+                {isAuthenticate ? (
+                  <button
+                    className="btn btn-outline-danger text-white"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-outline-success"
+                    onClick={handleLogin}
+                  >
+                    Login
+                  </button>
+                )}
               </li>
             </ul>
           </div>
